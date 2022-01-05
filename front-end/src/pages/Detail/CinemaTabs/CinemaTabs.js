@@ -1,13 +1,15 @@
 import React, { useState } from 'react'
 import { Tabs } from 'antd';
 import { useSelector } from 'react-redux'
+import YouTube from 'react-youtube';
 
 const { TabPane } = Tabs;
-export default function CinemaTabs() {
+export default function CinemaTabs(props) {
 
     const [state, setState] = useState({ tabPosition: 'left' });
     const { cinemas } = useSelector(state => state.CinemaReducer);
-    console.log(cinemas)
+    const { movieDetail } = props;
+    // console.log(cinemas)
 
     // const changeTabPosition = e => {
     //     this.setState({ tabPosition: e.target.value });
@@ -25,10 +27,8 @@ export default function CinemaTabs() {
                                 <TabPane key={index} tab={
                                     <div className="flex flex-row items-center justify-center">
                                         <img className="rounded-full" src={cinema.logoUrl} alt="img.jpg" width={50} />
-                                        <span className="text-center ml-3" style={{fontWeight: "bold"}}>{cinema.name}</span>
+                                        <span className="text-center ml-3" style={{ fontWeight: "bold" }}>{cinema.name}</span>
                                     </div>
-
-
                                 }>
                                     Tab 1
                                 </TabPane>
@@ -36,11 +36,27 @@ export default function CinemaTabs() {
                         })}
                     </Tabs>
                 </TabPane>
-                <TabPane tab="Thông Tin" key="2">
-                    Content of Tab Pane 2
+                <TabPane tab="Xem Trailer" key="3">
+                    <Tabs tabPosition={tabPosition}>
+                        {cinemas.map((cinema, index) => {
+                            return (
+                                <TabPane key={index} tab={
+                                    <div className="flex flex-row items-center justify-center">
+                                        <img className="rounded-full" src={cinema.logoUrl} alt="img.jpg" width={50} />
+                                        <span className="text-center ml-3" style={{ fontWeight: "bold" }}>{cinema.name}</span>
+                                    </div>
+                                }>
+                                    <div style={{ textAlign: 'center', padding: 40, margin: 'auto' }}>
+                                        <YouTube videoId={movieDetail.trailer} />
+                                    </div>
+                                </TabPane>
+                            )
+                        })}
+                    </Tabs>
+
                 </TabPane>
-                <TabPane tab="Đánh Giá" key="3">
-                    Content of Tab Pane 3
+                <TabPane tab="Giới Thiệu" key="2">
+                    <img src={movieDetail.backgroundIntroUrl} alt="img.jpg" style={{width: '100%'}}/>
                 </TabPane>
             </Tabs>
         </>
